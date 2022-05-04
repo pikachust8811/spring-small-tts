@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vue-service-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vue-service
+      version: v1
+  template:
+    metadata:
+      name: vue-service
+      labels:
+        app: vue-service
+        version: v1
+    spec:
+      containers:
+        - name: vue-service
+          image: pikachust8811/tts-frontend-vue:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vue-service-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vue-service
+      version: v2
+  template:
+    metadata:
+      name: vue-service
+      labels:
+        app: vue-service
+        version: v2
+    spec:
+      containers:
+        - name: vue-service
+          image: pikachust8811/tts-frontend-vue:v2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vue-service
+  labels:
+    app: vue-service
+spec:
+  selector:
+    app: vue-service
+  ports:
+    - port: 8080
+      name: http
+  type: NodePort

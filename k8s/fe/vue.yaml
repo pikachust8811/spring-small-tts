@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vue
+  template:
+    metadata:
+      labels:
+        app: vue
+    spec:
+      containers:
+        - name: app
+          image: pikachust8811/tts-frontend-vue:v1
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vue
+spec:
+  selector:
+    app: vue
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: LoadBalancer
